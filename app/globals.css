@@ -1,26 +1,83 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Palette — archival paper, ink, one accent */
+  --color-paper: #E9EAEC;
+  --color-card: #F1F2F3;
+  --color-ink: #15171C;
+  --color-graphite: #5C6069;
+  --color-rule: #C9CBD0;
+  --color-oxblood: #6B2737;
+
+  /* Typefaces — wired to the next/font variables in layout.js */
+  --font-display: var(--font-bodoni);
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-plex-mono);
+
+  /* Display sizes, tightened. Bodoni needs negative tracking at scale. */
+  --text-hero: 5.5rem;
+  --text-hero--line-height: 0.94;
+  --text-hero--letter-spacing: -0.03em;
+
+  --text-section: 2.75rem;
+  --text-section--line-height: 1.05;
+  --text-section--letter-spacing: -0.02em;
+
+  /* Mono metadata */
+  --text-meta: 0.6875rem;
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.14em;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* The record label: mono, uppercase, wide. Used on the index rail,
+   section eyebrows, and project metadata. One utility, used everywhere. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-graphite);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* A hairline that reads as a filing rule rather than a UI border. */
+@utility rule-t {
+  border-top: 1px solid var(--color-rule);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: var(--color-oxblood);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-oxblood);
+    outline-offset: 3px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
