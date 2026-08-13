@@ -177,6 +177,28 @@
   }
 }
 
+/* ── The shared print ─────────────────────────────────────────
+   When one photograph is shared between the first two plates, the
+   inline copies it stands in for step aside and the second plate
+   spreads out over it. Driving this from an attribute on <html>
+   rather than by swapping React trees keeps the server and client
+   markup identical, so there is nothing for hydration to disagree
+   about. */
+html[data-shared="on"] .shared-hide {
+  display: none;
+}
+
+html[data-shared="on"] .shared-spread {
+  display: block;
+}
+
+/* Text sitting on a photograph needs a shorter measure and a little
+   weight behind it to stay readable. */
+html[data-shared="on"] .shared-copy {
+  max-width: 44rem;
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.55);
+}
+
 /* ── The album ────────────────────────────────────────────────
    A bound photo album: leaves hinged at the spine, each with a
    printed face on both sides. Turning is a rotation about the

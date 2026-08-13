@@ -9,8 +9,8 @@ export default function Subject() {
       <div className="mx-auto max-w-6xl">
         <PlateHeading number="I" title={about.captionTitle} note="Gelatin silver print" />
 
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
-          <Reveal>
+        <div className="shared-spread grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <Reveal className="shared-hide">
             <div className="crop-marks p-2">
               <Develop
                 src={profile.portrait}
@@ -28,7 +28,7 @@ export default function Subject() {
             </div>
           </Reveal>
 
-          <div>
+          <div className="shared-copy">
             <Reveal delay={100}>
               <p className="display text-[clamp(1.25rem,2.2vw,1.85rem)] leading-snug text-print">
                 {about.lede}

@@ -128,7 +128,7 @@ export default function Cover() {
         {/* The print itself, mounted with crop marks */}
         <motion.div
           style={{ x: tx, y: ty, rotate: rz }}
-          className="order-1 mx-auto w-full max-w-[460px] lg:order-2 lg:mr-0"
+          className="shared-hide order-1 mx-auto w-full max-w-[460px] lg:order-2 lg:mr-0"
         >
           <div className="crop-marks p-2">
             <Develop
@@ -138,7 +138,7 @@ export default function Cover() {
               duration={1900}
               delay={250}
               sizes="(max-width: 1024px) 92vw, 460px"
-              className="aspect-[4/5] w-full shadow-[0_40px_90px_-30px_rgba(0,0,0,0.9)] lg:aspect-auto lg:h-[calc(100vh-320px)] lg:min-h-[320px] lg:max-h-[520px]"
+              className="aspect-[4/5] w-full rounded-[14px] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.9)] lg:aspect-auto lg:h-[calc(100vh-320px)] lg:min-h-[320px] lg:max-h-[520px]"
             />
             <div className="mt-3 flex items-baseline justify-between">
               <span className="edge">Frame 00 — the photographer</span>

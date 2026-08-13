@@ -1,4 +1,5 @@
 import Rail from "./components/Rail";
+import SharedPrint from "./components/SharedPrint";
 import Plate from "./components/ui/Plate";
 import Cover from "./components/Cover";
 import Subject from "./components/Subject";
@@ -18,9 +19,12 @@ export default function Home() {
         Skip to the work
       </a>
 
+      {/* Sits beneath the plates; the first two are read over it. */}
+      <SharedPrint />
+
       <Rail />
 
-      <main>
+      <main className="relative z-10">
         {/* The cover doesn't turn — you're already looking at it. */}
         <Plate id="cover" flat>
           <Cover />
