@@ -1,48 +1,142 @@
 @import "tailwindcss";
 
 @theme {
-  /* Palette — archival paper, ink, one accent */
-  --color-paper: #E9EAEC;
-  --color-card: #F1F2F3;
-  --color-ink: #15171C;
-  --color-graphite: #5C6069;
-  --color-rule: #C9CBD0;
-  --color-oxblood: #6B2737;
+  /* ── Palette ────────────────────────────────────────────────
+     A photographic archive laid out on a lit viewing table.
+     The ground is warm near-black (mount board, never pure #000);
+     the prints are warm white paper. Gold is film-box gold and is
+     rationed: hairlines, frame numbers, active states. Stamp red
+     appears in exactly one place — the certification stamps. */
+  --color-ground: #15130f;
+  --color-board: #1e1b16;
+  --color-edge: #2c2720;
+  --color-print: #f0ebe1;
+  --color-emulsion: #b8b0a2;
+  --color-silver: #7c7568;
+  --color-gold: #e3a83c;
+  --color-stamp: #8c3341;
 
-  /* Typefaces — wired to the next/font variables in layout.js */
-  --font-display: var(--font-bodoni);
+  /* ── Typefaces ─────────────────────────────────────────────
+     Fraunces for plate titles (a display serif with wonk — warm,
+     catalogue-ish, deliberately not a fashion-magazine Bodoni).
+     Instrument Sans for prose. Plex Mono is the film-edge face:
+     frame numbers, exposure data, plate numbers. */
+  --font-display: var(--font-fraunces);
   --font-sans: var(--font-instrument);
   --font-mono: var(--font-plex-mono);
 
-  /* Display sizes, tightened. Bodoni needs negative tracking at scale. */
-  --text-hero: 5.5rem;
-  --text-hero--line-height: 0.94;
-  --text-hero--letter-spacing: -0.03em;
+  --text-cover: clamp(3.25rem, 11vw, 9rem);
+  --text-cover--line-height: 0.86;
+  --text-cover--letter-spacing: -0.035em;
 
-  --text-section: 2.75rem;
-  --text-section--line-height: 1.05;
-  --text-section--letter-spacing: -0.02em;
+  --text-plate: clamp(1.75rem, 4vw, 3rem);
+  --text-plate--line-height: 1;
+  --text-plate--letter-spacing: -0.02em;
 
-  /* Mono metadata */
+  /* Film-edge metadata */
+  --text-edge: 0.625rem;
+  --text-edge--line-height: 1.4;
+  --text-edge--letter-spacing: 0.18em;
+
   --text-meta: 0.6875rem;
-  --text-meta--line-height: 1.4;
+  --text-meta--line-height: 1.5;
   --text-meta--letter-spacing: 0.14em;
 }
 
-/* The record label: mono, uppercase, wide. Used on the index rail,
-   section eyebrows, and project metadata. One utility, used everywhere. */
-@utility label {
+/* ── The film-edge label ───────────────────────────────────────
+   Mono, uppercase, wide. This is the archive's handwriting: it
+   marks every plate, frame and caption on the page. */
+@utility edge {
   font-family: var(--font-mono);
-  font-size: var(--text-meta);
+  font-size: var(--text-edge);
   line-height: 1.4;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-graphite);
+  color: var(--color-silver);
 }
 
-/* A hairline that reads as a filing rule rather than a UI border. */
-@utility rule-t {
-  border-top: 1px solid var(--color-rule);
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-silver);
+}
+
+/* Display type wants the optical-size and wonk axes pushed up;
+   Fraunces at default settings looks like any other serif. */
+@utility display {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
+  font-weight: 400;
+}
+
+/* ── Registration marks ───────────────────────────────────────
+   The corner crop marks on a photographic proof. Drawn with
+   gradients so they cost nothing and stay crisp at any size. */
+@utility crop-marks {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  &::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid var(--color-gold);
+    border-left: 1px solid var(--color-gold);
+  }
+  &::after {
+    right: -1px;
+    bottom: -1px;
+    border-right: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+  }
+}
+
+/* The resting state of an archived print. Matches the final stop of
+   the develop keyframe, for images that appear without developing. */
+@utility toned {
+  filter: sepia(0.16) saturate(0.7) contrast(1.06) brightness(0.97);
+}
+
+/* ── Film grain ───────────────────────────────────────────────
+   Real emulsion grain via fractal noise, held at low opacity so
+   it reads as texture rather than dirt. */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.16;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+  }
+}
+
+/* ── The sprocket rail ────────────────────────────────────────
+   The perforated edge of 35mm stock. Repeating rounded holes
+   punched out of the strip's own colour. */
+@utility sprockets {
+  background-image: radial-gradient(
+    var(--color-ground) 0 32%,
+    transparent 34%
+  );
+  background-size: 26px 100%;
+  background-position: center;
+  background-repeat: repeat-x;
 }
 
 @layer base {
@@ -52,20 +146,161 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* One gesture, one plate. Snapping is only enabled where a whole
+     section genuinely fits the viewport — on short or narrow screens
+     mandatory snap would trap content off-screen, so those get
+     ordinary scrolling instead. */
+  @media (min-width: 1024px) and (min-height: 640px) {
+    html {
+      scroll-snap-type: y mandatory;
+    }
+  }
+
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-ground);
+    color: var(--color-print);
     font-family: var(--font-sans);
+    /* `clip` rather than `hidden`: `hidden` would make the body its
+       own scroll container and cancel the snapping set on <html>. */
+    overflow-x: clip;
   }
 
   ::selection {
-    background-color: var(--color-oxblood);
-    color: var(--color-paper);
+    background-color: var(--color-gold);
+    color: var(--color-ground);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-oxblood);
+    outline: 2px solid var(--color-gold);
     outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ── The album ────────────────────────────────────────────────
+   A bound photo album: leaves hinged at the spine, each with a
+   printed face on both sides. Turning is a rotation about the
+   spine, so the page has real thickness and catches light as it
+   goes over. */
+@utility leaf {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 900ms cubic-bezier(0.36, 0.06, 0.16, 1);
+}
+
+@utility leaf-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background-color: var(--color-board);
+}
+
+/* The gutter shadow that falls into the spine of an open book. */
+@utility gutter-l {
+  background-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.45),
+    transparent 14%
+  );
+}
+
+@utility gutter-r {
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.45),
+    transparent 14%
+  );
+}
+
+/* ── SIGNATURE: the develop transition ────────────────────────
+   Images do not fade in. They develop — surfacing from a blown-out
+   latent negative, through the grey mush of a half-fixed print,
+   into a positive image. One idea, applied to every photograph on
+   the page.
+
+   Every stop lists the same filter functions in the same order, so
+   the browser interpolates between them smoothly rather than
+   cross-fading. The final stop is the archive tone below — prints
+   come to rest slightly desaturated and warm, which is what lets
+   photographs from any source sit together on one page. */
+@keyframes develop {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+    filter: invert(1) sepia(0.6) saturate(0.3) contrast(2.6) brightness(1.7)
+      blur(10px);
+  }
+  22% {
+    opacity: 1;
+  }
+  60% {
+    filter: invert(0.18) sepia(0.55) saturate(0.6) contrast(1.45)
+      brightness(1.12) blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: invert(0) sepia(0.16) saturate(0.7) contrast(1.06) brightness(0.97)
+      blur(0px);
+  }
+}
+
+/* The safelight sweep that crosses a print as it comes up. */
+@keyframes safelight {
+  0% {
+    opacity: 0;
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  35% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+/* A rubber stamp coming down on the page: overshoot, then settle. */
+@keyframes stamp-press {
+  0% {
+    opacity: 0;
+    transform: scale(1.5) rotate(var(--tilt, 0deg));
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.94) rotate(var(--tilt, 0deg));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(var(--tilt, 0deg));
+  }
+}
+
+/* Display lines rise into frame from behind their own baseline. */
+@keyframes line-up {
+  from {
+    clip-path: inset(100% -5% -30% -5%);
+    transform: translateY(0.28em);
+  }
+  to {
+    clip-path: inset(-30% -5% -30% -5%);
+    transform: translateY(0);
+  }
+}
+
+@keyframes edge-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 

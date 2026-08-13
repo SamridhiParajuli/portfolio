@@ -1,10 +1,11 @@
-import { Bodoni_Moda, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const bodoni = Bodoni_Moda({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-bodoni",
+  variable: "--font-fraunces",
   display: "swap",
+  axes: ["SOFT", "WONK", "opsz"],
 });
 
 const instrument = Instrument_Sans({
@@ -23,14 +24,14 @@ const plexMono = IBM_Plex_Mono({
 export const metadata = {
   title: "Samridhi Parajuli — Full Stack Developer",
   description:
-    "Full stack developer in Toronto building AI-powered web applications with Next.js, Python, and FastAPI.",
+    "An archive of work by Samridhi Parajuli, a full stack developer in Toronto building AI-powered web applications with Next.js, Python, and FastAPI.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${bodoni.variable} ${instrument.variable} ${plexMono.variable}`}
+      className={`${fraunces.variable} ${instrument.variable} ${plexMono.variable}`}
     >
       <body>{children}</body>
     </html>
