@@ -199,6 +199,25 @@ html[data-shared="on"] .shared-copy {
   text-shadow: 0 1px 24px rgba(0, 0, 0, 0.55);
 }
 
+/* While the print is still travelling, the album's cover holds its
+   photograph back, so there is only ever one image on screen — the one
+   in flight. The travelling print rides above the album for this
+   stretch and lands exactly on the cover's bounds; the cover takes the
+   picture up as the print bows out, and because the two are identical
+   and aligned the swap cannot be seen. The cover keeps its board, so
+   the pages stacked behind it never show through. */
+.album-photo {
+  transition: opacity 420ms ease-out;
+}
+
+html[data-shared="on"] .album-photo {
+  opacity: 0;
+}
+
+html[data-shared="on"][data-gathered] .album-photo {
+  opacity: 1;
+}
+
 /* ── The album ────────────────────────────────────────────────
    A bound photo album: leaves hinged at the spine, each with a
    printed face on both sides. Turning is a rotation about the
@@ -213,6 +232,31 @@ html[data-shared="on"] .shared-copy {
   transform-origin: left center;
   transform-style: preserve-3d;
   transition: transform 900ms cubic-bezier(0.36, 0.06, 0.16, 1);
+}
+
+/* Shading on a leaf's two faces. Paper turning away from the light
+   loses it; the face coming up gains it. Both share the leaf's timing
+   so the shading and the turn move as one. */
+@utility leaf-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: var(--color-ground);
+  transition: opacity 900ms cubic-bezier(0.36, 0.06, 0.16, 1);
+}
+
+/* The shadow a lifting sheet throws across the page beneath it. */
+@utility leaf-cast {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.85),
+    transparent 38%
+  );
+  transition: opacity 900ms cubic-bezier(0.36, 0.06, 0.16, 1);
 }
 
 @utility leaf-face {
